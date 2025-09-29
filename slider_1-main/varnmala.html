@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Varnmala Learning Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eaac66 0%, #393988);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        h1 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .instructions {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .letters-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .letter-btn {
+            background: linear-gradient(135deg, #eaac66 0%, #87490f);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .letter-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .letter-btn:active {
+            transform: scale(0.95);
+        }
+
+        .info-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 2px solid #e9ecef;
+        }
+
+        .letter-display {
+            font-size: 60px;
+            font-weight: bold;
+            color: #4a5568;
+            margin: 10px 0;
+            min-height: 70px;
+        }
+
+        .word-display {
+            font-size: 20px;
+            color: #666;
+            margin: 10px 0;
+            min-height: 30px;
+        }
+
+        .pronunciation {
+            font-size: 18px;
+            color: #495057;
+            font-style: italic;
+            margin: 10px 0;
+            min-height: 25px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .letters-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .letters-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .letter-btn {
+                padding: 15px;
+                font-size: 20px;
+                height: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LEARN HINDI VARNMALA</h1>
+        <p class="instructions">Click on any Hindi letter</p>
+        
+        <div class="letters-container" id="lettersContainer">
+            <!-- Letters will be added by JavaScript -->
+        </div>
+
+        <div class="info-section">
+            <div class="letter-display" id="currentLetter">अ</div>
+            <div class="word-display" id="exampleWord">अनार (Pomegranate)</div>
+            <div class="pronunciation" id="pronunciation">Pronounced as "uh"</div>
+        </div>
+    </div>
+
+    <script>
+        // Data for Hindi letters
+        const varnmalaData = [
+            { letter: 'अ', word: 'अनार', pronunciation: 'Pronounced as "uh"' },
+            { letter: 'आ', word: 'आम', pronunciation: 'Pronounced as "aa"' },
+            { letter: 'इ', word: 'इमली', pronunciation: 'Pronounced as "i"' },
+            { letter: 'ई', word: 'ईख', pronunciation: 'Pronounced as "ee"' },
+            { letter: 'उ', word: 'उल्लू', pronunciation: 'Pronounced as "u"' },
+            { letter: 'ऊ', word: 'ऊन', pronunciation: 'Pronounced as "oo"' },
+            { letter: 'ऋ', word: 'ऋषि', pronunciation: 'Pronounced as "ri"' },
+            { letter: 'ए', word: 'एक', pronunciation: 'Pronounced as "ay"' },
+            { letter: 'ऐ', word: 'ऐनक', pronunciation: 'Pronounced as "ai"' },
+            { letter: 'ओ', word: 'ओखली', pronunciation: 'Pronounced as "o"' },
+            { letter: 'औ', word: 'औरत', pronunciation: 'Pronounced as "au"' }
+        ];
+
+        // Get DOM elements
+        const lettersContainer = document.getElementById('lettersContainer');
+        const currentLetter = document.getElementById('currentLetter');
+        const exampleWord = document.getElementById('exampleWord');
+        const pronunciation = document.getElementById('pronunciation');
+
+        // Create letter buttons
+        varnmalaData.forEach(item => {
+            const button = document.createElement('button');
+            button.className = 'letter-btn';
+            button.textContent = item.letter;
+            button.onclick = () => showLetterInfo(item);
+            lettersContainer.appendChild(button);
+        });
+
+        // Function to show letter information
+        function showLetterInfo(letterData) {
+            // Update the display
+            currentLetter.textContent = letterData.letter;
+            exampleWord.textContent = `${letterData.word} (${getEnglishMeaning(letterData.word)})`;
+            pronunciation.textContent = letterData.pronunciation;
+        }
+
+        // Helper function to get English meanings (simplified)
+        function getEnglishMeaning(hindiWord) {
+            const meanings = {
+                'अनार': 'Pomegranate',
+                'आम': 'Mango',
+                'इमली': 'Tamarind',
+                'ईख': 'Sugarcane',
+                'उल्लू': 'Owl',
+                'ऊन': 'Wool',
+                'ऋषि': 'Sage',
+                'एक': 'One',
+                'ऐनक': 'Spectacles',
+                'ओखली': 'Mortar',
+                'औरत': 'Woman'
+            };
+            return meanings[hindiWord] || 'Word';
+        }
+
+        // Initialize with first letter
+        showLetterInfo(varnmalaData[0]);
+    </script>
+</body>
+</html>

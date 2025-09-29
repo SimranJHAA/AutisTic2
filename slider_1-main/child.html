@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AQ-Child Autism Screening</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #fffaf8;
+      color: #5a4a42;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 60px 20px;
+      display: flex;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .text-content h1 {
+      font-size: 3rem;
+      color: #e65100;
+      margin: 0 0 20px;
+    }
+
+    .text-content p {
+      font-size: 1.1rem;
+      color: #543e2e;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      padding: 14px 32px;
+      font-size: 1.1em;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .btn-male {
+      background-color: #e65100;
+      color: white;
+    }
+
+    .btn-female {
+      background-color: #ff6d00;
+      color: white;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    /* Image on right */
+    .image-container {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      height: 450px;
+    }
+
+    .image-wrapper {
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      top: 0;
+      right: 0;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(255, 154, 118, 0.2);
+      transform: rotate(10deg);
+    }
+
+    .image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .image-overlay {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      bottom: 0;
+      left: 0;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      transform: rotate(-10deg);
+    }
+
+    .image-overlay img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Quiz Section */
+    .quiz-section {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .question {
+      margin-bottom: 20px;
+      font-size: 1.1em;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .option {
+      padding: 10px;
+      background-color: #fffbe6;
+      border: 2px solid #ffe0b2;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 0.85em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .option:hover, .option.selected {
+      background-color: #ff9a76;
+      color: white;
+      border-color: #e65100;
+    }
+
+    .submit-btn {
+      margin-top: 20px;
+      padding: 14px 32px;
+      background-color: #e65100;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1em;
+      cursor: pointer;
+    }
+
+    /* Report Section */
+    .report-section {
+      display: none;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      margin-top: 20px;
+      border: 1px solid #ffdca8;
+    }
+
+    .score-box {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #e65100;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .recommendation {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #543e2e;
+    }
+
+    .back-btn {
+      padding: 12px 28px;
+      background-color: #8d7b73;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 20px;
+      display: block;
+      width: fit-content;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Left: Text -->
+    <div class="text-content">
+      <h1>Autism Traits in Children</h1>
+      <p>This screening is based on real-life behaviors observed in autistic children. Answer as honestly as possible — this helps identify if your child may benefit from further support.</p>
+
+      <!-- Gender Selection -->
+      <div id="gender-selection">
+        <p><strong>Select your child's gender:</strong></p>
+        <div class="buttons space-x-4">
+          <button class="btn btn-male" onclick="selectGender('boy')">BOY</button>
+          <button class="btn btn-female" onclick="selectGender('girl')">GIRL</button>
+        </div>
+      </div>
+
+      <!-- Quiz Section -->
+      <div id="quiz-section" class="quiz-section">
+        <h2 class="font-semibold mb-4">Parent-Reported Questions</h2>
+        <div id="questions"></div>
+        <button class="submit-btn" onclick="submitQuiz()">Submit Answers</button>
+      </div>
+
+      <!-- Report Section -->
+      <div id="report-section" class="report-section">
+        <h2 class="text-xl font-semibold">Your Child's Autism Trait Report</h2>
+        <p id="report-gender"></p>
+        <div class="score-box" id="score-display">0 / 10</div>
+        <p id="report-message"></p>
+        <button class="back-btn" onclick="restartQuiz()">← Take Another Test</button>
+      </div>
+    </div>
+
+    <!-- Right: Images -->
+    <div id="image-container" class="image-container">
+      <div class="image-wrapper">
+        <img src="/zariya-main/slider_1-main/image/child1.png" alt="Child Autism">
+      </div>
+      <div class="image-overlay">
+        <img src="image/child2.png " alt="Parent and Child">
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let userAnswers = {};
+    let selectedGender = '';
+
+    // ✅ Real AQ-Child / CAST-Based Questions (Simplified)
+    const childQuestions = [
+      "Does your child avoid eye contact when spoken to?",
+      "Does your child prefer to play alone rather than with other children?",
+      "Does your child repeat words or phrases without understanding them?",
+      "Does your child have strong reactions to loud noises or bright lights?",
+      "Does your child get upset when routines change?",
+      "Does your child have difficulty understanding other children's feelings?",
+      "Does your child focus intensely on specific interests (e.g., trains, numbers)?",
+      "Does your child find it hard to start or keep a conversation?",
+      "Does your child walk on tiptoes or flap hands when excited?",
+      "Does your child seem unaware when called by name?"
+    ];
+
+    function selectGender(gender) {
+      selectedGender = gender;
+      document.getElementById('gender-selection').style.display = 'none';
+      document.getElementById('image-container').style.display = 'none';
+      document.getElementById('quiz-section').style.display = 'block';
+
+      const questionsDiv = document.getElementById('questions');
+      questionsDiv.innerHTML = '';
+
+      childQuestions.forEach((q, index) => {
+        const qId = `q${index}`;
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question';
+        questionDiv.innerHTML = `<p><strong>${index + 1}.</strong> ${q}</p>`;
+
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'options';
+
+        ['Always', 'Often', 'Sometimes', 'Rarely', 'Never'].forEach(option => {
+          const optionBtn = document.createElement('div');
+          optionBtn.className = 'option';
+          optionBtn.textContent = option;
+
+          optionBtn.onclick = () => {
+            optionsDiv.querySelectorAll('.option').forEach(btn => {
+              btn.classList.remove('selected');
+            });
+            optionBtn.classList.add('selected');
+            userAnswers[qId] = option;
+          };
+
+          optionsDiv.appendChild(optionBtn);
+        });
+
+        questionDiv.appendChild(optionsDiv);
+        questionsDiv.appendChild(questionDiv);
+      });
+    }
+
+    function submitQuiz() {
+      const total = childQuestions.length;
+      const answered = Object.keys(userAnswers).length;
+
+      if (answered < total) {
+        alert(`Please answer all questions. ${total - answered} left.`);
+        return;
+      }
+
+      // ✅ Scoring: Always = 2, Often = 1, Others = 0
+      let score = 0;
+      Object.values(userAnswers).forEach(ans => {
+        if (ans === 'Always') score += 2;
+        else if (ans === 'Often') score += 1;
+      });
+
+      // Hide quiz
+      document.getElementById('quiz-section').style.display = 'none';
+      document.getElementById('report-section').style.display = 'block';
+
+      document.getElementById('report-gender').innerHTML = `<strong>Child's Gender:</strong> ${selectedGender.charAt(0).toUpperCase() + selectedGender.slice(1)}`;
+      document.getElementById('score-display').textContent = `${score} / 20`;
+
+      const msg = document.getElementById('report-message');
+
+      if (score >= 12) {
+        msg.innerHTML = `
+          <strong>Score: ${score}/20</strong> — This suggests <strong>significant autistic traits</strong>.<br><br>
+          Many parents with similar scores go on to get a formal diagnosis. 
+          Consider speaking with a pediatrician, child psychologist, or developmental specialist.<br><br>
+          Early support can make a big difference in communication, learning, and confidence.
+        `;
+      } else if (score >= 6) {
+        msg.innerHTML = `
+          <strong>Score: ${score}/20</strong> — Your child shows <strong>some autistic traits</strong>.<br><br>
+          This doesn’t mean they are autistic, but it may explain some behaviors. 
+          If you’re concerned, talk to a professional who understands neurodiversity.
+        `;
+      } else {
+        msg.innerHTML = `
+          <strong>Score: ${score}/20</strong> — Fewer traits were observed.<br><br>
+          This doesn’t rule out autism — some children mask their feelings or show subtle signs. 
+          If you still have concerns, trust your instincts and seek a professional opinion.
+        `;
+      }
+    }
+
+    function restartQuiz() {
+      userAnswers = {};
+      selectedGender = '';
+      document.getElementById('report-section').style.display = 'none';
+      document.getElementById('quiz-section').style.display = 'none';
+      document.getElementById('image-container').style.display = 'block';
+      document.getElementById('gender-selection').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

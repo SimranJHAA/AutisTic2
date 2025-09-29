@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autism Assessment - Results</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background-color: #fffaf8;
+      color: #5a4a42;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .header h1 {
+      font-size: 3.2rem;
+      font-weight: 600;
+      color: #d97706;
+      margin: 0;
+    }
+
+    .header p {
+      font-size: 1.2rem;
+      color: #8d7b73;
+      max-width: 600px;
+      margin: 12px auto;
+    }
+
+    .image-container {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      margin: 0 auto;
+      transform: rotate(10deg);
+      overflow: hidden;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(255, 154, 118, 0.15);
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.95) saturate(0.9);
+    }
+
+    .buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 24px;
+    }
+
+    .btn {
+      padding: 14px 32px;
+      font-size: 1.1em;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .btn-male {
+      background-color: #e65100;
+      color: white;
+    }
+
+    .btn-female {
+      background-color: #ff6d00;
+      color: white;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    /* Quiz Section */
+    .quiz-section {
+      display: none;
+      margin-top: 40px;
+    }
+
+    .question {
+      margin-bottom: 24px;
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .option {
+      padding: 12px;
+      background-color: #fffbe6;
+      border: 2px solid #ffe0b2;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      font-size: 0.9em;
+      font-weight: 500;
+    }
+
+    .option:hover {
+      background-color: #ffd1c1;
+      border-color: #ff9a76;
+    }
+
+    .option.selected {
+      background-color: #ff9a76;
+      color: white;
+      border-color: #e65100;
+      box-shadow: 0 2px 8px rgba(230, 81, 0, 0.2);
+    }
+
+    .submit-btn {
+      margin-top: 24px;
+      padding: 14px 32px;
+      background-color: #e65100;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #d94400;
+      transform: translateY(-2px);
+    }
+
+    /* Report Section */
+    .report-section {
+      display: none;
+      background: white;
+      padding: 32px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      max-width: 800px;
+      margin: 0 auto;
+      border: 1px solid #ffdca8;
+    }
+
+    .report-title {
+      font-size: 2rem;
+      color: #e65100;
+      text-align: center;
+      margin: 0 0 16px;
+    }
+
+    .score-box {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+      color: #d97706;
+      margin: 20px 0;
+    }
+
+    .recommendation {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: #543e2e;
+    }
+
+    .back-btn {
+      display: block;
+      margin: 30px auto 0;
+      padding: 12px 28px;
+      background-color: #8d7b73;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <h1>Discover Your Autism Profile</h1>
+      <p>
+        Understanding your experiences helps build better self-awareness and support.
+        Take this quiz to gain insights into your autistic traits and strengths.
+      </p>
+    </div>
+
+    <!-- Image Container -->
+    <div class="image-container">
+      <img src="/slider_1-main/image/bow.png" alt="Autism Awareness">
+    </div>
+
+    <!-- Gender Selection -->
+    <div id="gender-selection">
+      <p class="text-center">Start by selecting your gender</p>
+      <div class="buttons">
+        <button class="btn btn-male" onclick="selectGender('male')">MALE</button>
+        <button class="btn btn-female" onclick="selectGender('female')">FEMALE</button>
+      </div>
+    </div>
+
+    <!-- Quiz Section -->
+    <div id="quiz-section" class="quiz-section">
+      <h2 class="text-center text-xl font-semibold mb-4">AQ-10 Adult Assessment</h2>
+      <div id="questions"></div>
+      <button class="submit-btn" onclick="submitQuiz()">Submit Answers</button>
+    </div>
+
+    <!-- Report Section -->
+    <div id="report-section" class="report-section">
+      <h2 class="report-title">Your Autism Trait Assessment Report</h2>
+      <p class="text-center" id="report-gender"></p>
+      <div class="score-box" id="score-display">0 / 10</div>
+      <p class="recommendation" id="report-message">
+        Your personalized result will appear here.
+      </p>
+      <button class="back-btn" onclick="restartQuiz()">← Take Another Test</button>
+    </div>
+
+  </div>
+
+  <script>
+    let userAnswers = {};
+    let selectedGender = '';
+
+    // AQ-10 Questions
+    const questions = [
+      "I find it difficult to make new friends.",
+      "I am often awkward in social situations.",
+      "I find it hard to understand other people’s emotions.",
+      "I prefer to spend time alone rather than with others.",
+      "I often feel uncomfortable in groups.",
+      "I struggle to maintain eye contact.",
+      "I find it hard to express my feelings.",
+      "I often misinterpret jokes or sarcasm.",
+      "I get overwhelmed in noisy environments.",
+      "I have difficulty understanding non-verbal cues."
+    ];
+
+    // Scoring: For these questions, "Strongly Agree" or "Agree" = 1 point
+    const scoringQuestions = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]); // All 10 questions count
+
+    function selectGender(gender) {
+      selectedGender = gender;
+      document.getElementById('gender-selection').style.display = 'none';
+      document.getElementById('quiz-section').style.display = 'block';
+
+      const questionsDiv = document.getElementById('questions');
+      questionsDiv.innerHTML = '';
+
+      questions.forEach((q, index) => {
+        const questionId = `q${index}`;
+
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question';
+        questionDiv.innerHTML = `<p><strong>${index + 1}.</strong> ${q}</p>`;
+        
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'options';
+
+        ['Strongly Agree', 'Agree', 'Neutral', 'Disagree', 'Strongly Disagree'].forEach((option, i) => {
+          const optionBtn = document.createElement('div');
+          optionBtn.className = 'option';
+          optionBtn.textContent = option;
+          optionBtn.dataset.value = i;
+
+          optionBtn.onclick = () => {
+            optionsDiv.querySelectorAll('.option').forEach(btn => {
+              btn.classList.remove('selected');
+            });
+            optionBtn.classList.add('selected');
+            userAnswers[questionId] = {
+              question: q,
+              answer: option,
+              score: i
+            };
+          };
+
+          optionsDiv.appendChild(optionBtn);
+        });
+
+        questionDiv.appendChild(optionsDiv);
+        questionsDiv.appendChild(questionDiv);
+      });
+    }
+
+    function submitQuiz() {
+      const totalQuestions = questions.length;
+      const answered = Object.keys(userAnswers).length;
+
+      if (answered < totalQuestions) {
+        alert(`Please answer all questions. ${totalQuestions - answered} left.`);
+        return;
+      }
+
+      // ✅ Calculate Score
+      let score = 0;
+      for (let i = 0; i < questions.length; i++) {
+        const answer = userAnswers[`q${i}`];
+        const responseValue = answer.score; // 0: Strongly Agree → 4: Strongly Disagree
+
+        // Strongly Agree (0) or Agree (1) = 1 point
+        if (responseValue === 0 || responseValue === 1) {
+          score += 1;
+        }
+      }
+
+      // ✅ Show Report
+      document.getElementById('quiz-section').style.display = 'none';
+      document.getElementById('report-section').style.display = 'block';
+
+      document.getElementById('report-gender').innerHTML = `<strong>Gender:</strong> ${selectedGender.charAt(0).toUpperCase() + selectedGender.slice(1)}`;
+      document.getElementById('score-display').textContent = `${score} / 10`;
+
+      const messageEl = document.getElementById('report-message');
+      if (score >= 6) {
+        messageEl.innerHTML = `
+          <strong>Score: ${score} / 10</strong><br><br>
+          This score suggests <strong>significant autistic traits</strong>. 
+          While this is not a diagnosis, it indicates that you may benefit from a 
+          <strong>professional autism assessment</strong>.<br><br>
+          Many adults with similar scores go on to receive a formal diagnosis. 
+          Consider speaking with a psychologist or psychiatrist who specializes in autism.
+        `;
+      } else {
+        messageEl.innerHTML = `
+          <strong>Score: ${score} / 10</strong><br><br>
+          This score suggests <strong>fewer autistic traits</strong> based on this screening. 
+          However, this does <strong>not rule out autism</strong>.<br><br>
+          Some autistic adults score below 6, especially if they've learned to mask their traits. 
+          If you still have concerns, consider discussing them with a healthcare professional.
+        `;
+      }
+    }
+
+    function restartQuiz() {
+      userAnswers = {};
+      selectedGender = '';
+      document.getElementById('report-section').style.display = 'none';
+      document.getElementById('gender-selection').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

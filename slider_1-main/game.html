@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Games Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eaac66 0%, #6e3907 100%);
+            min-height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 20px 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .logo h1 {
+            color: #4a5568;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .logo i {
+            color: #eaac66;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .menu {
+            flex: 1;
+            padding: 0 20px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            margin: 8px 0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 16px;
+            text-decoration: none;
+        }
+        .home{
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            margin: 8px 0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+        .menu-item:hover {
+            background: linear-gradient(135deg, #eab566 0%, #764ba2 100%);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .menu-item.active {
+            background: linear-gradient(135deg,  #eab566 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .menu-item i {
+            margin-right: 15px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 0;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 60px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-height: 500px;
+            display: block;
+        }
+
+        .game-title {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #ffffff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .game-description {
+            font-size: 20px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Game iframes */
+        .game-iframe {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            border: none;
+            background: white;
+        }
+
+        .game-iframe.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .sidebar .logo h1,
+            .sidebar .menu-item span {
+                display: none;
+            }
+            
+            .sidebar .logo {
+                padding: 20px 0;
+            }
+            
+            .sidebar .menu-item {
+                justify-content: center;
+                padding: 20px;
+            }
+            
+            .sidebar .menu-item i {
+                margin-right: 0;
+                font-size: 24px;
+            }
+            
+            .main-content {
+                padding: 0;
+            }
+            
+            .game-iframe {
+                height: calc(100vh - 20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <h1>Learn & Play</h1>
+        </div>
+        <div class="menu" >
+            <a href="main.html" class="home">
+                <i class="fas fa-home"></i>
+                <span>HOME</span>
+            </a>
+            <a href="#" class="menu-item" data-page="alphabets">
+                <i class="fas fa-font"></i>
+                <span>ALPHABETS</span>
+            </a>
+             <a href="#" class="menu-item" data-page="varnmala">
+                <i class="fas fa-book-open"></i>
+                <span>VARNMALA</span>
+            </a>
+            <a href="#" class="menu-item" data-page="numbers">
+                <i class="fas fa-hashtag"></i>
+                <span>NUMBERS</span>
+            </a>
+            
+            <a href="#" class="menu-item" data-page="about">
+                <i class="fas fa-info-circle"></i>
+                <span>ABOUT</span>
+            </a>
+        </div>
+    </div>
+
+    <button class="back-button" id="backButton">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
+
+    <div class="main-content">
+        <div class="game-container" id="mainContainer">
+            <h1 class="game-title" id="gameTitle">Welcome to Learn & Play</h1>
+            <p class="game-description" id="gameDescription">
+                Select a category from the sidebar to begin your learning adventure!
+            </p>
+        </div>
+        
+        <!-- ABC Game iframe -->
+        <iframe src="abcd_game.html" class="game-iframe" id="abcGame" frameborder="0"></iframe>
+        
+        <!-- Varnmala Game iframe -->
+        <iframe src="varnmala.html" class="game-iframe" id="varnmalaGame" frameborder="0"></iframe>
+
+        
+        <!-- Varnmala Game iframe -->
+        <iframe src="numbers.html" class="game-iframe" id="numberGame" frameborder="0"></iframe>
+    </div>
+
+    <script>
+        const menuItems = document.querySelectorAll('.menu-item');
+        const gameTitle = document.getElementById('gameTitle');
+        const gameDescription = document.getElementById('gameDescription');
+        const backButton = document.getElementById('backButton');
+        const mainContainer = document.getElementById('mainContainer');
+        const abcGame = document.getElementById('abcGame');
+        const varnmalaGame = document.getElementById('varnmalaGame');
+        const numberGame = document.getElementById('numberGame');
+
+        const pageContent = {
+            'home': {
+                title: 'HOME',
+                description: 'Welcome to your educational portal! Select any category from the sidebar to begin your learning adventure.'
+            },
+            'varnmala': {
+                title: 'VARNMALA',
+                description: 'Welcome to Varnmala! Learn and practice Hindi alphabets through interactive games and activities.'
+            },
+            'alphabets': {
+                title: 'ALPHABETS',
+                description: 'Master the English alphabet with fun and engaging activities. Perfect for beginners and young learners.'
+            },
+            'numbers': {
+                title: 'NUMBERS',
+                description: 'Learn counting, basic arithmetic, and number recognition through interactive games and puzzles.'
+            },
+            'about': {
+                title: 'ABOUT',
+                description: 'Learn more about our mission to provide accessible and engaging educational content for learners of all ages.'
+            }
+        };
+
+        menuItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all items
+                menuItems.forEach(i => i.classList.remove('active'));
+                
+                // Add active class to clicked item
+                this.classList.add('active');
+                
+                const pageId = this.getAttribute('data-page');
+                loadPage(pageId);
+                
+                // Show back button on mobile
+                if (window.innerWidth <= 768) {
+                    backButton.style.display = 'block';
+                }
+            });
+        });
+
+        function loadPage(pageId) {
+            // Hide all iframes first
+            abcGame.classList.remove('active');
+            varnmalaGame.classList.remove('active');
+            
+            if (pageId === 'alphabets') {
+                // Show ABC game iframe and hide main container
+                mainContainer.style.display = 'none';
+                abcGame.classList.add('active');
+            } else if (pageId === 'varnmala') {
+                // Show Varnmala game iframe and hide main container
+                mainContainer.style.display = 'none';
+                varnmalaGame.classList.add('active');
+            }else if (pageId === 'numbers') {
+                // Show Varnmala game iframe and hide main container
+                mainContainer.style.display = 'none';
+                numberGame.classList.add('active');
+            }
+             else {
+                // Show main container with page content and hide all iframes
+                mainContainer.style.display = 'block';
+                
+                const content = pageContent[pageId];
+                gameTitle.textContent = content.title;
+                gameDescription.textContent = content.description;
+            }
+        }
+
+        backButton.addEventListener('click', function() {
+            // Go back to home page
+            menuItems.forEach(item => {
+                if (item.getAttribute('data-page') === 'home') {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+            loadPage('home');
+            this.style.display = 'none';
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                backButton.style.display = 'none';
+            }
+        });
+
+        // Initialize with home page selected
+        document.querySelector('.menu-item[data-page="home"]').classList.add('active');
+        loadPage('home');
+    </script>
+</body>
+</html>
