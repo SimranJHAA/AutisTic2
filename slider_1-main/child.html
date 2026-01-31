@@ -240,7 +240,7 @@
     let userAnswers = {};
     let selectedGender = '';
 
-    // ✅ Real AQ-Child / CAST-Based Questions (Simplified)
+    // Real AQ-Child 
     const childQuestions = [
       "Does your child avoid eye contact when spoken to?",
       "Does your child prefer to play alone rather than with other children?",
@@ -302,7 +302,7 @@
         return;
       }
 
-      // ✅ Scoring: Always = 2, Often = 1, Others = 0
+      //Scoring: Always = 2, Often = 1, Others = 0
       let score = 0;
       Object.values(userAnswers).forEach(ans => {
         if (ans === 'Always') score += 2;
