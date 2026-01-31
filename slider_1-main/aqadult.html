@@ -321,7 +321,7 @@
         return;
       }
 
-      // ✅ Calculate Score
+    
       let score = 0;
       for (let i = 0; i < questions.length; i++) {
         const answer = userAnswers[`q${i}`];
@@ -333,7 +333,7 @@
         }
       }
 
-      // ✅ Show Report
+      //Show Report
       document.getElementById('quiz-section').style.display = 'none';
       document.getElementById('report-section').style.display = 'block';
 
