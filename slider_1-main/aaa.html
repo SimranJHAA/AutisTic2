@@ -239,8 +239,6 @@
   <script>
     let userAnswers = {};
     let selectedGender = '';
-
-    // ✅ AAA Questions (Based on real Asperger's traits in adults)
     const aaaQuestions = [
       "I often feel like I don't fit in socially, even when people are friendly.",
       "I have a strong focus on specific interests that others may find unusual.",
@@ -302,7 +300,7 @@
         return;
       }
 
-      // ✅ Scoring: Always = 2, Often = 1, Others = 0
+      // Scoring: Always = 2, Often = 1, Others = 0
       let score = 0;
       Object.values(userAnswers).forEach(ans => {
         if (ans === 'Always') score += 2;
